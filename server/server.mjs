@@ -9,7 +9,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/list", lists);
+app.use("/dashboard", lists);
 
 // start the Express server
 app.listen(PORT, () => {
