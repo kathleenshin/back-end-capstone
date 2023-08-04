@@ -13,8 +13,8 @@ function generateShortUUID() {
 const router = express.Router();
 
 // This section will help you get a list of all the lists.
-router.get("/", async (req, res) => {
-    let collection = await db.collection("lists");
+router.get("/", async (res) => {
+    let collection =  db.collection("lists");
     let result = await collection.find({}).toArray();
     
     if (!result) {
@@ -26,7 +26,7 @@ router.get("/", async (req, res) => {
 
 // This section will help you get a single list by id
 router.get("/list/:listId", async (req, res) => {
-    let collection = await db.collection("restaurants");
+    let collection =  db.collection("restaurants");
     let query = {listId: req.params.listId};
     let result = await collection.find(query).toArray();
     // let result = await collection.findOne(query);
@@ -51,7 +51,7 @@ router.post("/", async (req, res) => {
         listId: generateShortUUID(),
         name: req.body.name
     };
-    let collection = await db.collection("lists");
+    let collection =  db.collection("lists");
     let result = await collection.insertOne(newDocument);
 
     if (!result) {
@@ -71,7 +71,7 @@ router.patch("/list/:listId", async (req, res) => {
     }
     };
 
-    let collection = await db.collection("lists");
+    let collection = db.collection("lists");
     let result = await collection.updateOne(query, updates);
 
     if (!result) {
@@ -110,7 +110,7 @@ export default router;
 
 // This section will help you get a single record by id
 router.get("/list/:listId/:restaurantId", async (req, res) => {
-    let collection = await db.collection("restaurants");
+    let collection = db.collection("restaurants");
     //const listQuery = { listId: req.params.listId};
     const restaurantQuery = { restaurantId: req.params.restaurantId}; //listId: req.params.listId 
     let result = await collection.findOne(restaurantQuery);
@@ -138,7 +138,7 @@ router.post("/list/:listId", async (req, res) => {
         listId: req.params.listId // Assuming 'listId' is the field to associate the restaurant with a list.
     };
 
-    let collection = await db.collection("restaurants");
+    let collection = db.collection("restaurants");
     let result = await collection.insertOne(newDocument);
 
     if (result.acknowledged === false) {
