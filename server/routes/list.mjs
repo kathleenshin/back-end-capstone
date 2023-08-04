@@ -13,7 +13,7 @@ function generateShortUUID() {
 const router = express.Router();
 
 // This section will help you get a list of all the lists.
-router.get("/", async (res) => {
+router.get("/", async (req, res) => {
     let collection =  db.collection("lists");
     let result = await collection.find({}).toArray();
     
@@ -26,10 +26,9 @@ router.get("/", async (res) => {
 
 // This section will help you get a single list by id
 router.get("/list/:listId", async (req, res) => {
-    let collection =  db.collection("restaurants");
+    let collection = db.collection("restaurants");
     let query = {listId: req.params.listId};
     let result = await collection.find(query).toArray();
-    // let result = await collection.findOne(query);
 
     if (!result) {
         res.status(404).send("Not found");
@@ -41,7 +40,6 @@ router.get("/list/:listId", async (req, res) => {
 
 // This section will help you create a new list.
 router.post("/", async (req, res) => {
-    // Check if the 'name' field is present in the request body and not empty
     if (!req.body.name || req.body.name.trim() === "") {
         res.status(400).send("Name is required");
         return;
@@ -84,7 +82,6 @@ router.patch("/list/:listId", async (req, res) => {
 
 // This section will help you delete a list
 router.delete("/list/:listId", async (req, res) => {
-    // Check if the provided ID is a valid ObjectId
     if (!ObjectId.isValid(req.params.listId)) {
         res.status(400).send("Invalid ID");
         return;
@@ -111,8 +108,8 @@ export default router;
 // This section will help you get a single record by id
 router.get("/list/:listId/:restaurantId", async (req, res) => {
     let collection = db.collection("restaurants");
-    //const listQuery = { listId: req.params.listId};
-    const restaurantQuery = { restaurantId: req.params.restaurantId}; //listId: req.params.listId 
+
+    const restaurantQuery = { restaurantId: req.params.restaurantId};
     let result = await collection.findOne(restaurantQuery);
 
 
@@ -126,7 +123,6 @@ router.get("/list/:listId/:restaurantId", async (req, res) => {
 
 // This section will help you add a new restaurant to a list.
 router.post("/list/:listId", async (req, res) => {
-    // Check if the 'restaurantName' field is present in the request body and not empty
     if (!req.body.restaurantName || req.body.restaurantName.trim() === "") {
         res.status(400).send("Restaurant name is required");
         return;
@@ -135,7 +131,7 @@ router.post("/list/:listId", async (req, res) => {
     let newDocument = {
         restaurantId: generateShortUUID(),
         restaurantName: req.body.restaurantName,
-        listId: req.params.listId // Assuming 'listId' is the field to associate the restaurant with a list.
+        listId: req.params.listId 
     };
 
     let collection = db.collection("restaurants");
@@ -157,14 +153,12 @@ router.delete("/list/:listId/:restaurantId", async (req, res) => {
     const listCollection = db.collection("lists");
     const restaurantCollection = db.collection("restaurants");
 
-    // Check if the list exists before deleting the restaurant
     const list = await listCollection.findOne(listQuery);
     if (!list) {
         res.status(404).send("List not found");
         return;
     }
 
-    // Delete the restaurant only if it belongs to the specified list
     const result = await restaurantCollection.deleteOne(restaurantQuery);
 
     if (result.deletedCount === 0) {
