@@ -85,7 +85,7 @@ router.patch("/list/:listId", async (req, res) => {
 // This section will help you delete a list
 router.delete("/list/:listId", async (req, res) => {
     // Check if the provided ID is a valid ObjectId
-    if (!listId.isValid(req.params.listId)) {
+    if (!ObjectId.isValid(req.params.listId)) {
         res.status(400).send("Invalid ID");
         return;
     }
