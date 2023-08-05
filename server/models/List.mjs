@@ -6,4 +6,6 @@ const listSchema = mongoose.Schema({
 })
 
 
-export default mongoose.model('List', listSchema);
+const PostList = mongoose.model('PostList', listSchema);
+
+export default PostList;

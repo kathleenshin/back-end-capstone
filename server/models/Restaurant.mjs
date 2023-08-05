@@ -9,4 +9,6 @@ const restaurantSchema = mongoose.Schema({
 })
 
 
-export default mongoose.model('Restaurant', restaurantSchema);
+const PostRestaurant = mongoose.model('PostRestaurant', restaurantSchema);
+
+export default PostRestaurant;
