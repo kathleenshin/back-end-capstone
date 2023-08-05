@@ -1,8 +1,10 @@
 import mongoose from 'mongoose';
 
+
 const listSchema = mongoose.Schema({
-    listId: String,
-    name: String
+    name: String,
+    listId: String
+    
 })
 
 
