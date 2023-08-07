@@ -1,6 +1,6 @@
 
 import express from "express";
-import db from "../db/conn.mjs";
+import dbPromise from "../db/conn.mjs";
 import { ObjectId } from "mongodb";
 import {v4 as uuidv4} from 'uuid';
 
@@ -14,7 +14,9 @@ const router = express.Router();
 
 // This section will help you get a list of all the lists.
 router.get("/", async (req, res) => {
-    let collection =  db.collection("lists");
+    const db = await dbPromise
+    console.log(db)
+    let collection = db.collection("lists");
     let result = await collection.find({}).toArray();
     
     if (!result) {
