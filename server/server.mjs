@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import "./loadEnvironment.mjs";
-import lists from "./routes/list.mjs";
+import lists from "./routes/listRoutes.mjs";
 
 const PORT = process.env.PORT || 5000;
 const app = express();
