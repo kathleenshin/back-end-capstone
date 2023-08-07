@@ -31,6 +31,6 @@ async function setupConnection() {
     }
 }
 
-const dbPromise = setupConnection();
+//const dbPromise = setupConnection();
 
-export default dbPromise;
+export default db;
