@@ -3,6 +3,7 @@ import express from "express";
 import db from "../db/conn.mjs";
 import { ObjectId } from "mongodb";
 import PostList from "../models/List.mjs";
+import PostRestaurant from "../models/Restaurant.mjs"
 import {v4 as uuidv4} from 'uuid';
 
 function generateShortUUID() {
@@ -160,15 +161,18 @@ router.post("/list/:listId", async (req, res) => {
         res.status(400).send("Restaurant name is required");
         return;
     }
-
-    let newDocument = {
+    const newRestaurant = new PostRestaurant({
         restaurantId: generateShortUUID(),
         restaurantName: req.body.restaurantName,
-        listId: req.params.listId 
-    };
-
+        listId: req.params.listId,
+        cuisine: req.body.cuisine,
+        phoneNumber: req.body.phoneNumber,
+        address: req.body.address,
+        pricePoint: req.body.pricePoint
+    });
+    
     let collection = db.collection("restaurants");
-    let result = await collection.insertOne(newDocument);
+    let result = await collection.insertOne(newRestaurant);
 
     if (result.acknowledged === false) {
         res.status(404).send("Not found");
