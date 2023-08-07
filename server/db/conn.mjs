@@ -10,7 +10,7 @@ try {
     console.error("Error connecting to MongoDB:", e);
 }
 
-let db = conn.db("capstonedb");
+let db = conn.db("Cluster1");
 
 export default db;
 
