@@ -1,6 +1,6 @@
 
 import express from "express";
-import dbPromise from "../db/conn.mjs";
+import db from "../db/conn.mjs";
 import { ObjectId } from "mongodb";
 import {v4 as uuidv4} from 'uuid';
 
@@ -14,9 +14,7 @@ const router = express.Router();
 
 // This section will help you get a list of all the lists.
 router.get("/", async (req, res) => {
-    const db = await dbPromise
-    console.log(db)
-    let collection = db.collection("lists");
+    let collection = await db.collection("lists");
     let result = await collection.find({}).toArray();
     
     if (!result) {
@@ -28,7 +26,7 @@ router.get("/", async (req, res) => {
 
 // This section will help you get a single list by id
 router.get("/list/:listId", async (req, res) => {
-    let collection = db.collection("restaurants");
+    let collection = await db.collection("restaurants");
     let query = {listId: req.params.listId};
     let result = await collection.find(query).toArray();
 
@@ -51,7 +49,7 @@ router.post("/", async (req, res) => {
         listId: generateShortUUID(),
         name: req.body.name
     };
-    let collection =  db.collection("lists");
+    let collection = await db.collection("lists");
     let result = await collection.insertOne(newDocument);
 
     if (!result) {
@@ -71,7 +69,7 @@ router.patch("/list/:listId", async (req, res) => {
     }
     };
 
-    let collection = db.collection("lists");
+    let collection = await db.collection("lists");
     let result = await collection.updateOne(query, updates);
 
     if (!result) {
@@ -91,7 +89,7 @@ router.delete("/list/:listId", async (req, res) => {
 
     const query = { listId: req.params.listId };
 
-    const collection = db.collection("lists");
+    const collection = await db.collection("lists");
     let result = await collection.deleteOne(query);
 
     if (result.deletedCount === 0) {
@@ -102,19 +100,14 @@ router.delete("/list/:listId", async (req, res) => {
 });
 
 
-export default router;
-
-
 // ************* Restaurants routes *************
 
 // This section will help you get a single record by id
 router.get("/list/:listId/:restaurantId", async (req, res) => {
-    let collection = db.collection("restaurants");
+    let collection = await db.collection("restaurants");
 
     const restaurantQuery = { restaurantId: req.params.restaurantId};
     let result = await collection.findOne(restaurantQuery);
-
-
 
     if (!result) {
         res.status(404).send("Not found");
@@ -136,7 +129,7 @@ router.post("/list/:listId", async (req, res) => {
         listId: req.params.listId 
     };
 
-    let collection = db.collection("restaurants");
+    let collection = await db.collection("restaurants");
     let result = await collection.insertOne(newDocument);
 
     if (result.acknowledged === false) {
@@ -170,3 +163,5 @@ router.delete("/list/:listId/:restaurantId", async (req, res) => {
     }
 });
 
+
+export default router;
