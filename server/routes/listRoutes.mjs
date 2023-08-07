@@ -100,9 +100,6 @@ router.delete("/list/:listId", async (req, res) => {
 });
 
 
-export default router;
-
-
 // ************* Restaurants routes *************
 
 // This section will help you get a single record by id
@@ -111,8 +108,6 @@ router.get("/list/:listId/:restaurantId", async (req, res) => {
 
     const restaurantQuery = { restaurantId: req.params.restaurantId};
     let result = await collection.findOne(restaurantQuery);
-
-
 
     if (!result) {
         res.status(404).send("Not found");
@@ -168,3 +163,5 @@ router.delete("/list/:listId/:restaurantId", async (req, res) => {
     }
 });
 
+
+export default router;
