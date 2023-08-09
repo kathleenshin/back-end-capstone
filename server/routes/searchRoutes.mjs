@@ -6,6 +6,24 @@ import fetch from 'node-fetch';
 
 const router = express.Router();
 
+// Route for getting user-specific data
+router.get('/:sub', async (req, res) => {
+    try {
+        const userId = req.params.sub
+        const userData = req.User.findOne({ googleSub: userId });
+        
+        if (!userData) {
+            return res.status(404).json({ message: 'User data not found' });
+        }
+
+        return res.json(userData);
+    } catch (error) {
+        res.status(500).json({ error: 'Internal server error' });
+    }
+})
+
+
+
 router.get('/search', async (req, res) => {
     //const { term, latitude, longitude } = req.query;
     const { term } = req.query
