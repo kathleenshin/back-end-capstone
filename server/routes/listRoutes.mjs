@@ -1,8 +1,8 @@
-
 import express from "express";
 import db from "../db/conn.mjs";
 import { ObjectId } from "mongodb";
 import {v4 as uuidv4} from 'uuid';
+import fetch from 'node-fetch';
 
 function generateShortUUID() {
     const fullUUID = uuidv4();
@@ -11,6 +11,33 @@ function generateShortUUID() {
 }
 
 const router = express.Router();
+// Search Routes
+
+// router.post("/search", async (req, res) => {
+//     const YELP_API = process.env.YELP_API_KEY;
+//     const sdk = require('api')('@yelp-developers/v1.0#29blk6qj5xa');
+//     sdk.auth(`Bearer ${YELP_API}`);
+    
+//     let searchRestaurant = {
+//         location: req.body.location,
+//         term: req.body.term,
+//     };
+
+//     sdk.v3_business_search(searchRestaurant)
+//         .then(({ data }) => {
+//             // ... (code to insert data.businesses[0] into the database)
+//             res.send(data.businesses[0]).status(204);
+//         })
+//         .catch(err => {
+//             // ... (error handling)
+//         });
+// });
+
+
+
+
+
+
 
 // This section will help you get a list of all the lists.
 router.get("/", async (req, res) => {
