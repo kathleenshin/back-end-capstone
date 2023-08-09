@@ -7,10 +7,12 @@ import fetch from 'node-fetch';
 const router = express.Router();
 
 router.get('/search', async (req, res) => {
-    const { term, latitude, longitude } = req.query;
+    //const { term, latitude, longitude } = req.query;
+    const { term } = req.query
     const { name } = req.body;
-    const url = `https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&term=${term}&sort_by=best_match&limit=5`;
-
+    // const url = `https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&term=${term}&sort_by=best_match&limit=5`;
+   //const url = `https://api.yelp.com/v3/autocomplete/search?term=${term}&location=${location}&sort_by=best_match&limit=5`;
+   const url = `https://api.yelp.com/v3/businesses/search?term=${term}&location=Seattle&sort_by=best_match&limit=5`;
     const options = {
         method: 'GET',
         headers: {
