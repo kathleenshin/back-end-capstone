@@ -7,8 +7,9 @@ import fetch from 'node-fetch';
 const router = express.Router();
 
 router.get('/search', async (req, res) => {
-    const { name, latitude, longitude } = req.query;
-    const url = `https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&name=${name}&sort_by=best_match&limit=20`;
+    const { term, latitude, longitude } = req.query;
+    const { name } = req.body;
+    const url = `https://api.yelp.com/v3/businesses/search?latitude=${latitude}&longitude=${longitude}&term=${term}&sort_by=best_match&limit=5`;
 
     const options = {
         method: 'GET',
@@ -20,7 +21,7 @@ router.get('/search', async (req, res) => {
 
     try {
         const response = await fetch(url, options);
-        const json = await response.json();
+        const json = await response.json(name);
         res.json(json); // Return the Yelp API response as JSON
     } catch (error) {
         console.error('Error:', error);
