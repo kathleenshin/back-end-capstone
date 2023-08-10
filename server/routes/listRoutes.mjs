@@ -1,8 +1,10 @@
 import express from "express";
 import db from "../db/conn.mjs";
 import { ObjectId } from "mongodb";
+import PostList from "../models/List.mjs";
+import PostRestaurant from "../models/Restaurant.mjs"
 import {v4 as uuidv4} from 'uuid';
-import fetch from 'node-fetch';
+
 
 function generateShortUUID() {
     const fullUUID = uuidv4();
@@ -11,32 +13,6 @@ function generateShortUUID() {
 }
 
 const router = express.Router();
-// Search Routes
-
-// router.post("/search", async (req, res) => {
-//     const YELP_API = process.env.YELP_API_KEY;
-//     const sdk = require('api')('@yelp-developers/v1.0#29blk6qj5xa');
-//     sdk.auth(`Bearer ${YELP_API}`);
-    
-//     let searchRestaurant = {
-//         location: req.body.location,
-//         term: req.body.term,
-//     };
-
-//     sdk.v3_business_search(searchRestaurant)
-//         .then(({ data }) => {
-//             // ... (code to insert data.businesses[0] into the database)
-//             res.send(data.businesses[0]).status(204);
-//         })
-//         .catch(err => {
-//             // ... (error handling)
-//         });
-// });
-
-
-
-
-
 
 
 // This section will help you get a list of all the lists.
@@ -72,12 +48,14 @@ router.post("/", async (req, res) => {
         return;
     }
 
-    let newDocument = {
+    let newList = new PostList({
         listId: generateShortUUID(),
-        name: req.body.name
-    };
-    let collection = await db.collection("lists");
-    let result = await collection.insertOne(newDocument);
+        name: req.body.name,
+        //userId: req.body.userId
+    });
+
+    let collection = db.collection("lists");
+    let result = await collection.insertOne(newList);
 
     if (!result) {
         res.status(204).send("No content");
@@ -137,29 +115,6 @@ router.get("/list/:listId/:restaurantId", async (req, res) => {
     let result = await collection.findOne(restaurantQuery);
 
     if (!result) {
-        res.status(404).send("Not found");
-    } else {
-        res.status(200).send(result);
-    }
-});
-
-// This section will help you add a new restaurant to a list.
-router.post("/list/:listId", async (req, res) => {
-    if (!req.body.restaurantName || req.body.restaurantName.trim() === "") {
-        res.status(400).send("Restaurant name is required");
-        return;
-    }
-
-    let newDocument = {
-        restaurantId: generateShortUUID(),
-        restaurantName: req.body.restaurantName,
-        listId: req.params.listId 
-    };
-
-    let collection = await db.collection("restaurants");
-    let result = await collection.insertOne(newDocument);
-
-    if (result.acknowledged === false) {
         res.status(404).send("Not found");
     } else {
         res.status(200).send(result);

@@ -10,6 +10,27 @@ const restaurantSchema = mongoose.Schema({
     restaurantId: String
 })
 
+// {
+//     "id": "vs5dhED5Yf8kqPp06OD2QQ",
+//     "alias": "momiji-seattle",
+//     "name": "Momiji",
+//     "image_url": "https://s3-media4.fl.yelpcdn.com/bphoto/rJRpgzdWFFjdCaPt6vKCWQ/o.jpg",
+//     "categories"[0]: [
+//         {
+//             "alias": "japanese",
+//             "title": "Japanese"
+//         }
+//     ],
+//     "rating": 4,
+//     "price": "$$",
+//     "display_address": [
+//         "1522 12th Ave",
+//         "Seattle, WA 98122"
+//         ]
+//     },
+//     "display_phone": "(206) 457-4068",
+//     "distance": 1847.275584435568
+// }
 
 const PostRestaurant = mongoose.model('PostRestaurant', restaurantSchema);
 
