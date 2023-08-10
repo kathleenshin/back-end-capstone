@@ -11,7 +11,6 @@ const restaurantSchema = mongoose.Schema({
 })
 
 // {
-//     "id": "vs5dhED5Yf8kqPp06OD2QQ",
 //     "alias": "momiji-seattle",
 //     "name": "Momiji",
 //     "image_url": "https://s3-media4.fl.yelpcdn.com/bphoto/rJRpgzdWFFjdCaPt6vKCWQ/o.jpg",

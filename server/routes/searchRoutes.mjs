@@ -3,6 +3,16 @@ import db from "../db/conn.mjs";
 import { ObjectId } from "mongodb";
 import {v4 as uuidv4} from 'uuid';
 import fetch from 'node-fetch';
+import mongoose from "mongoose";
+import PostRestaurant from "../models/Restaurant.mjs";
+import PostList from "../models/List.mjs";
+import PostFavoritesList from "../models/Favorites.mjs";
+
+function generateShortUUID() {
+    const fullUUID = uuidv4();
+    const shortUUID = fullUUID.substring(0, 12); // Extract the first 12 characters
+    return shortUUID;
+}
 
 const router = express.Router();
 
@@ -50,32 +60,97 @@ router.get('/search', async (req, res) => {
 });
 
 
-// This section will help you add a new restaurant to a list.
-router.post("/list/:listId", async (req, res) => {
-    if (!req.body.restaurantName || req.body.restaurantName.trim() === "") {
-        res.status(400).send("Restaurant name is required");
-        return;
-    }
+// // This section will help you add a new restaurant to a list.
+// router.post("/list/:listId", async (req, res) => {
+//     if (!req.body.restaurantName || req.body.restaurantName.trim() === "") {
+//         res.status(400).send("Restaurant name is required");
+//         return;
+//     }
 
-    const newRestaurant = new PostRestaurant({
-        restaurantId: generateShortUUID(),
-        restaurantName: req.body.restaurantName,
-        listId: req.params.listId,
-        cuisine: req.body.cuisine,
-        phoneNumber: req.body.phoneNumber,
-        address: req.body.address,
-        pricePoint: req.body.pricePoint
+//     const newRestaurant = new PostRestaurant({
+//         restaurantId: generateShortUUID(),
+//         restaurantName: req.body.restaurantName,
+//         listId: req.params.listId,
+//         cuisine: req.body.cuisine,
+//         phoneNumber: req.body.phoneNumber,
+//         address: req.body.address,
+//         pricePoint: req.body.pricePoint
+//     });
+
+//     let collection = await db.collection("restaurants");
+//     let result = await collection.insertOne(newRestaurant);
+
+//     if (result.acknowledged === false) {
+//         res.status(404).send("Not found");
+//     } else {
+//         res.status(200).send(result);
+//     }
+// });
+
+
+// Route to save restaurant data to a list
+router.post('/', async (req, res) => {
+    //const restaurantData = req.body.restaurantData; // Assuming this is the data from the Yelp API request
+    //const listId = req.body.listId; // The ID of the list to which you want to add the restaurant
+
+    try {
+        // Check if the favorites list exists
+        // const existingList = await Lists.findById(listId);
+        const listName = "Favorites";
+        let listCollection = await db.collection("lists");
+        const existingList = await listCollection.findOne({ name: listName });
+
+        if (existingList) {
+        // If the list exists, add its ID to the restaurant data
+        //const newRestaurant = new PostRestaurant();
+        //await newRestaurant.save();
+
+        let newRestaurant = new PostRestaurant({
+            listId: listName.listId,
+            restaurantName: req.body.name,
+            cuisine: req.body.categories,
+            phoneNumber: req.body.display_phone,
+            address: req.body.display_address,
+            pricePoint: req.body.price,
+            restaurantId: generateShortUUID()
+        });
+    
+        let collection = db.collection("restaurants");
+        let result = await collection.insertOne(newRestaurant);
+
+
+        } else {
+        // If the list doesn't exist, create a new one
+        const newList = new PostFavoritesList({
+            listId: generateShortUUID()
+        });
+        
+        let listCollection = await db.collection("lists");
+        let result = await listCollection.insertOne(newList);
+        }
+
+        // Create a new restaurant document using the Restaurant schema
+        let newRestaurant = new PostRestaurant({
+            listId: listName.listId,
+            restaurantName: req.body.name,
+            cuisine: req.body.categories,
+            phoneNumber: req.body.display_phone,
+            address: req.body.display_address,
+            pricePoint: req.body.price,
+            restaurantId: generateShortUUID()
+        });
+
+        let collection = db.collection("restaurants");
+        let result = await collection.insertOne(newRestaurant);
+
+        res.status(201).json({ message: 'Restaurant saved successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'An error occurred while saving the restaurant' });
+    }
     });
 
-    let collection = await db.collection("restaurants");
-    let result = await collection.insertOne(newRestaurant);
 
-    if (result.acknowledged === false) {
-        res.status(404).send("Not found");
-    } else {
-        res.status(200).send(result);
-    }
-});
 
 
 export default router;
