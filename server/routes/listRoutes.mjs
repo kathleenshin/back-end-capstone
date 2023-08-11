@@ -27,18 +27,108 @@ router.get("/", async (req, res) => {
     }
 });
 
-// This section will help you get a single list by id
-router.get("/list/:listId", async (req, res) => {
-    let collection = await db.collection("restaurants");
-    let query = {listId: req.params.listId};
-    let result = await collection.find(query).toArray();
+// // This section will help you get a single list by id
+// router.get("/list/:listId", async (req, res) => {
+//     let collection = await db.collection("restaurants");
+//     let query = {listId: req.params.listId};
+//     let result = await collection.find(query).toArray();
 
-    if (!result) {
-        res.status(404).send("Not found");
-    } else {
-        res.status(200).send(result);
+//     if (!result) {
+//         res.status(404).send("Not found");
+//     } else {
+//         res.status(200).send(result);
+//     }
+// });
+// USE THIS IF CURRENT CODE DOESNT WORK:
+// router.get("/list/:listId", async (req, res) => {
+//     try {
+//         let collection = await db.collection("lists");
+//         let query = { listId: req.params.listId };
+//         let result = await collection.findOne(query);
+
+//         if (!result) {
+//             res.status(404).send("Not found");
+//         } else {
+//             // Populate the restaurants associated with the list
+//             const populatedList = await result.populate('restaurants').execPopulate();
+//             res.status(200).send(populatedList);
+//         }
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ message: 'An error occurred while fetching the list' });
+//     }
+// });
+// listRoutes.mjs
+
+// ... (existing imports and code)
+
+// router.get("/list/:listId", async (req, res) => {
+//     try {
+//         const collection = await db.collection("lists");
+//         const query = { listId: req.params.listId };
+//         const result = await collection.findOne(query);
+
+//         if (!result) {
+//             res.status(404).send("Not found");
+//         } else {
+//             // Assuming result.restaurants is an array of restaurant IDs
+//             if (!result.restaurants || result.restaurants.length === 0) {
+//                 res.status(200).send(result);
+//                 return;
+//             }
+
+//             const restaurantCollection = await db.collection("restaurants");
+//             const restaurantIds = result.restaurants; // Assuming you already have valid restaurant IDs
+
+//             // Manually fetch and populate the associated restaurants using restaurant IDs
+//             const restaurants = await restaurantCollection.find({ restaurantId: { $in: restaurantIds } }).toArray();
+
+//             // Assign the fetched restaurants to the list's 'restaurants' field
+//             result.restaurants = restaurants;
+
+//             res.status(200).send(result);
+//         }
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ message: 'An error occurred while fetching the list' });
+//     }
+// });
+// listRoutes.mjs
+
+// ... (existing imports and code)
+
+router.get("/list/:listId", async (req, res) => {
+    try {
+        const collection = await db.collection("lists");
+        const query = { listId: req.params.listId };
+        const result = await collection.findOne(query);
+
+        if (!result) {
+            res.status(404).send("Not found");
+        } else {
+            // Assuming result.restaurants is an array of restaurant IDs
+            if (!result.restaurants || result.restaurants.length === 0) {
+                res.status(200).send(result);
+                return;
+            }
+
+            const restaurantCollection = await db.collection("restaurants");
+
+            // Manually fetch and populate the associated restaurants using restaurant IDs
+            // const restaurants = await restaurantCollection.find({ _id: { $in: result.restaurants } }).toArray();
+            const restaurants = await restaurantCollection.find({ restaurantId: req.params.restaurantId, listId: req.params.listId}).toArray();
+
+            // Assign the fetched restaurants to the list's 'restaurants' field
+            // result.restaurants = restaurants;
+
+            res.status(200).send(result);
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'An error occurred while fetching the list' });
     }
 });
+
 
 
 // This section will help you create a new list.
@@ -107,19 +197,47 @@ router.delete("/list/:listId", async (req, res) => {
 
 // ************* Restaurants routes *************
 
-// This section will help you get a single record by id
+// // This section will help you get a single record by id
+// router.get("/list/:listId/:restaurantId", async (req, res) => {
+//     let collection = await db.collection("restaurants");
+
+//     const restaurantQuery = { restaurantId: req.params.restaurantId};
+//     let result = await collection.findOne(restaurantQuery);
+
+//     if (!result) {
+//         res.status(404).send("Not found");
+//     } else {
+//         res.status(200).send(result);
+//     }
+// });
+// Retrieve a single restaurant
+// listRoutes.mjs
+
+// ... (existing imports and code)
+
 router.get("/list/:listId/:restaurantId", async (req, res) => {
-    let collection = await db.collection("restaurants");
+    try {
+        const restaurantCollection = await db.collection("restaurants");
 
-    const restaurantQuery = { restaurantId: req.params.restaurantId};
-    let result = await collection.findOne(restaurantQuery);
+        const restaurantQuery = {
+            listId: req.params.listId,
+            restaurantId: req.params.restaurantId
+        };
 
-    if (!result) {
-        res.status(404).send("Not found");
-    } else {
-        res.status(200).send(result);
+        const result = await restaurantCollection.findOne(restaurantQuery);
+
+        if (!result) {
+            res.status(404).send("Restaurant not found");
+        } else {
+            res.status(200).json(result);
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'An error occurred while fetching the restaurant' });
     }
 });
+
+
 
 
 // This section will help you delete a restaurant from a list.

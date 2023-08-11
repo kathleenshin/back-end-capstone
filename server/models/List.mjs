@@ -5,6 +5,10 @@ const listSchema = mongoose.Schema({
     name: String,
     listId: String,
     //userId: String
+    // restaurants: [{
+    //     type: mongoose.Schema.Types.ObjectId,
+    //     ref: 'PostRestaurant'
+    // }]
     
 })
 
