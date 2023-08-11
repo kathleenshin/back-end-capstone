@@ -219,37 +219,37 @@ router.post('/', async (req, res) => {
             req.body.listId = newList.listId;
         } else {
             // If the list exists, associate its ID with the restaurant data
-            // Create a new restaurant instance
-            const newRestaurant = new PostRestaurant({
-            listId: existingList.listId, // Use the list ID to populate the reference
-            restaurantName: req.body.name,
-            cuisine: req.body.categories,
-            phoneNumber: req.body.display_phone,
-            address: req.body.display_address,
-            pricePoint: req.body.price,
-            restaurantId: generateShortUUID()
-            });
-
-        // Insert the restaurant instance into the restaurants collection
-            let restaurantCollection = await db.collection("restaurants");
-            let result = await restaurantCollection.insertOne(newRestaurant);
-
-            // res.status(201).json({ message: 'Restaurant saved successfully' });
-            //res.status(201).send(result);
-            if (!result) {
-                res.status(204).send("No content");
-            } else {
-                res.status(201).send(result);
-            }
+            req.body.listId = existingList.listId;
         }
 
-        
+        // Create a new restaurant instance
+        const newRestaurant = new PostRestaurant({
+            listId: req.body.listId, // Use the list ID to populate the reference
+            restaurantName: req.body.name,
+            cuisine: req.body.cuisine,
+            phoneNumber: req.body.phoneNumber,
+            address: req.body.address,
+            pricePoint: req.body.pricePoint,
+            restaurantId: generateShortUUID()
+        });
+
+        // Insert the restaurant instance into the restaurants collection
+        let restaurantCollection = await db.collection("restaurants");
+        let result = await restaurantCollection.insertOne(newRestaurant);
+
+        //res.status(201).json({ message: 'Restaurant saved successfully' });
+        //res.status(201).send(result);
+        if (!result) {
+            res.status(204).send("No content");
+            return;
+        } else {
+            res.status(201).send(result);
+        }
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'An error occurred while saving the restaurant' });
     }
 });
-
 
 
 export default router;

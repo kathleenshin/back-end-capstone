@@ -97,35 +97,56 @@ router.get("/", async (req, res) => {
 
 // ... (existing imports and code)
 
+// router.get("/list/:listId", async (req, res) => {
+//     try {
+//         const collection = await db.collection("lists");
+//         const query = { listId: req.params.listId };
+//         const result = await collection.findOne(query);
+
+//         if (!result) {
+//             res.status(404).send("Not found");
+//         } else {
+//             // Assuming result.restaurants is an array of restaurant IDs
+//             if (!result.restaurants || result.restaurants.length === 0) {
+//                 res.status(200).send(result);
+//                 return;
+//             }
+
+//             const restaurantCollection = await db.collection("restaurants");
+
+//             // Manually fetch and populate the associated restaurants using restaurant IDs
+//             // const restaurants = await restaurantCollection.find({ _id: { $in: result.restaurants } }).toArray();
+//             const restaurants = await restaurantCollection.find({ restaurantId: req.params.restaurantId, listId: req.params.listId}).toArray();
+
+//             // Assign the fetched restaurants to the list's 'restaurants' field
+//             // result.restaurants = restaurants;
+
+//             res.status(200).send(result);
+//         }
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ message: 'An error occurred while fetching the list' });
+//     }
+// });
+
+// This section will help you get a single list by id
 router.get("/list/:listId", async (req, res) => {
     try {
-        const collection = await db.collection("lists");
-        const query = { listId: req.params.listId };
-        const result = await collection.findOne(query);
+        //const listId = "e7709794-5c8";
+        const listId = req.params.listId
 
-        if (!result) {
-            res.status(404).send("Not found");
+        let collection = await db.collection("restaurants");
+        let query = { listId }; // Query for restaurants with the specified listId
+        let result = await collection.find(query).toArray();
+
+        if (!result || result.length === 0) {
+            res.status(404).json({ message: "No restaurants found for the given listId" });
         } else {
-            // Assuming result.restaurants is an array of restaurant IDs
-            if (!result.restaurants || result.restaurants.length === 0) {
-                res.status(200).send(result);
-                return;
-            }
-
-            const restaurantCollection = await db.collection("restaurants");
-
-            // Manually fetch and populate the associated restaurants using restaurant IDs
-            // const restaurants = await restaurantCollection.find({ _id: { $in: result.restaurants } }).toArray();
-            const restaurants = await restaurantCollection.find({ restaurantId: req.params.restaurantId, listId: req.params.listId}).toArray();
-
-            // Assign the fetched restaurants to the list's 'restaurants' field
-            // result.restaurants = restaurants;
-
-            res.status(200).send(result);
+            res.status(200).json(result);
         }
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'An error occurred while fetching the list' });
+        res.status(500).json({ message: 'An error occurred while fetching restaurants' });
     }
 });
 
