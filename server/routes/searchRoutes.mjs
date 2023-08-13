@@ -207,8 +207,8 @@ router.post('/search/save-favorite', async (req, res) => {
             listId,
             restaurantName: searchResult.name, // Access the restaurant name from searchResult
             cuisine: searchResult.categories.map(category => category.title).join(', '), // Access categories from searchResult
-            phoneNumber,
-            address: searchResult.location.address1, // Access address from searchResult
+            phoneNumber: searchResult.display_phone,
+            address: searchResult.location.display_address, // Access display address from searchResult
             pricePoint: searchResult.price, // Access price from searchResult
             restaurantId: generateShortUUID() // Assuming you have a function to generate UUID
         };
