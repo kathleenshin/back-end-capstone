@@ -161,21 +161,55 @@ router.get('/search', async (req, res) => {
 //     }
 // });
 
-// experiment code 2
+// // experiment code 2
+// router.post('/search/save-favorite', async (req, res) => {
+//     console.log("Received data: ", req.body);
+
+//     try {
+//         const { listId, restaurantName, cuisine, phoneNumber, address, pricePoint } = req.body;
+
+//       // Create a new restaurant instance
+//         const newRestaurant = {
+//             listId,
+//             restaurantName,
+//             cuisine,
+//             phoneNumber,
+//             address,
+//             pricePoint,
+//             restaurantId: generateShortUUID() // Assuming you have a function to generate UUID
+//         };
+
+//         // Insert the restaurant instance into the restaurants collection
+//         const restaurantCollection = db.collection("restaurants");
+//         const result = await restaurantCollection.insertOne(newRestaurant);
+
+//         if (!result) {
+//             res.status(204).send("No content");
+//         } else {
+//             res.status(201).json({ message: "Restaurant saved to favorites", restaurant: newRestaurant });
+//         }
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ message: 'An error occurred while saving the restaurant' });
+//     }
+//     });
+
+
+// experiment code 3
 router.post('/search/save-favorite', async (req, res) => {
     console.log("Received data: ", req.body);
     
     try {
         const { listId, restaurantName, cuisine, phoneNumber, address, pricePoint } = req.body;
-
-      // Create a new restaurant instance
+        
+        // Create a new restaurant instance
         const newRestaurant = {
             listId,
-            restaurantName,
-            cuisine,
+            restaurantName: searchResult.name, // Access the restaurant name from searchResult
+            cuisine: searchResult.categories.map(category => category.title).join(', '), // Access categories from searchResult
             phoneNumber,
-            address,
-            pricePoint,
+            address: searchResult.location.address1, // Access address from searchResult
+            pricePoint: searchResult.price, // Access price from searchResult
             restaurantId: generateShortUUID() // Assuming you have a function to generate UUID
         };
 
@@ -192,7 +226,7 @@ router.post('/search/save-favorite', async (req, res) => {
         console.error(error);
         res.status(500).json({ message: 'An error occurred while saving the restaurant' });
     }
-    });
+});
 
 
 
