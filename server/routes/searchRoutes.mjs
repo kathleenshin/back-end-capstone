@@ -163,6 +163,8 @@ router.get('/search', async (req, res) => {
 
 // experiment code 2
 router.post('/search/save-favorite', async (req, res) => {
+    console.log("Received data: ", req.body);
+    
     try {
         const { listId, restaurantName, cuisine, phoneNumber, address, pricePoint } = req.body;
 
