@@ -4,6 +4,12 @@ import { ObjectId } from "mongodb";
 import {v4 as uuidv4} from 'uuid';
 import fetch from 'node-fetch';
 
+function generateShortUUID() {
+    const fullUUID = uuidv4();
+    const shortUUID = fullUUID.substring(0, 12); // Extract the first 12 characters
+    return shortUUID;
+}
+
 const router = express.Router();
 
 router.get('/search', async (req, res) => {
