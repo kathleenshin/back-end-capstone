@@ -112,7 +112,7 @@ router.post('/search', async (req, res) => {
         }
 
         // Make a Yelp API call to fetch restaurant data
-        const { term } = req.query;
+        const { term } = req.body;
 
         const url = `https://api.yelp.com/v3/businesses/search?term=${term}&location=Seattle&sort_by=best_match&limit=5`;
 
