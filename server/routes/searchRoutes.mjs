@@ -211,11 +211,11 @@ router.post('/search/save-favorite', async (req, res) => {
         // Create a new restaurant instance
         const newRestaurant = {
             listId: req.body.listId,
-            restaurantName: searchResult.name, // Access the restaurant name from searchResult
-            cuisine: searchResult.categories.map(category => category.title).join(', '), // Access categories from searchResult
-            phoneNumber: searchResult.display_phone,
-            address: searchResult.location.display_address, // Access display address from searchResult
-            pricePoint: searchResult.price, // Access price from searchResult
+            restaurantName: selectedResult.name, // Access the restaurant name from selectedResult
+            cuisine: selectedResult.categories.map(category => category.title).join(', '), // Access categories from selectedResult
+            phoneNumber: selectedResult.display_phone,
+            address: selectedResult.location.display_address, // Access display address from selectedResult
+            pricePoint: selectedResult.price, // Access price from selectedResult
             restaurantId: generateShortUUID() // Assuming you have a function to generate UUID
         };
 
