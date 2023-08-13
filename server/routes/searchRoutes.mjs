@@ -209,14 +209,14 @@ router.post('/search/save-favorite', async (req, res) => {
         const { listId, restaurantName, cuisine, phoneNumber, address, pricePoint } = req.body;
         
         // Create a new restaurant instance
-        const newRestaurant = {
-            listId: req.body.listId,
-            restaurantName: selectedResult.name, // Access the restaurant name from selectedResult
-            cuisine: selectedResult.categories.map(category => category.title).join(', '), // Access categories from selectedResult
-            phoneNumber: selectedResult.display_phone,
-            address: selectedResult.location.display_address, // Access display address from selectedResult
-            pricePoint: selectedResult.price, // Access price from selectedResult
-            restaurantId: generateShortUUID() // Assuming you have a function to generate UUID
+    const newRestaurant = {
+        listId: req.body.listId,
+        restaurantName: req.body.name, // Access the restaurant name from the request body
+        cuisine: req.body.categories.map(category => category.title).join(', '), // Access categories from the request body
+        phoneNumber: req.body.display_phone,
+        address: req.body.location.display_address.join(', '), // Access display address from the request body
+        pricePoint: req.body.price, // Access price from the request body
+        restaurantId: generateShortUUID() // Assuming you have a function to generate UUID
         };
 
         // Insert the restaurant instance into the restaurants collection
