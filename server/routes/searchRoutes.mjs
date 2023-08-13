@@ -13,7 +13,8 @@ function generateShortUUID() {
     return shortUUID;
 }
 
-const listName = "Favorites"; // Name of the list you want to associate with
+// const listName = "Favorites"; // Name of the list you want to associate with
+const listName = "testfavorites";
 
 router.get('/search', async (req, res) => {
     //const { term, latitude, longitude } = req.query;
