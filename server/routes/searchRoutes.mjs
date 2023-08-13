@@ -3,6 +3,9 @@ import db from "../db/conn.mjs";
 import { ObjectId } from "mongodb";
 import {v4 as uuidv4} from 'uuid';
 import fetch from 'node-fetch';
+import PostFavoritesList from "./Restaurant.mjs";
+
+const router = express.Router();
 
 function generateShortUUID() {
     const fullUUID = uuidv4();
@@ -10,7 +13,7 @@ function generateShortUUID() {
     return shortUUID;
 }
 
-const router = express.Router();
+const listName = "Favorites"; // Name of the list you want to associate with
 
 router.get('/search', async (req, res) => {
     //const { term, latitude, longitude } = req.query;
@@ -96,26 +99,26 @@ router.get('/search', async (req, res) => {
 // // experiment code 1
 // // This section will help you add a new restaurant to a list.
 // router.post('/search', async (req, res) => {
-//     const listName = "Favorites"; // Name of the list you want to associate with
+    // const listName = "Favorites"; // Name of the list you want to associate with
 
-//     try {
-//         let listCollection = await db.collection("lists");
-//         const existingList = await listCollection.findOne({ name: listName });
+    // try {
+    //     let listCollection = await db.collection("lists");
+    //     const existingList = await listCollection.findOne({ name: listName });
 
-//         if (!existingList) {
-//             // If the list doesn't exist, create a new one
-//             const newList = new PostFavoritesList({
-//                 listId: generateShortUUID()
-//             });
+    //     if (!existingList) {
+    //         // If the list doesn't exist, create a new one
+    //         const newList = new PostFavoritesList({
+    //             listId: generateShortUUID()
+    //         });
 
-//             await listCollection.insertOne(newList);
+    //         await listCollection.insertOne(newList);
 
-//             // Associate the new list's ID with the restaurant data
-//             req.body.listId = newList.listId;
-//         } else {
-//             // If the list exists, associate its ID with the restaurant data
-//             req.body.listId = existingList.listId;
-//         }
+    //         // Associate the new list's ID with the restaurant data
+    //         req.body.listId = newList.listId;
+    //     } else {
+    //         // If the list exists, associate its ID with the restaurant data
+    //         req.body.listId = existingList.listId;
+    //     }
 
 //         // Make a Yelp API call to fetch restaurant data
 //         const { term } = req.body;
@@ -218,6 +221,26 @@ router.post('/search/save-favorite', async (req, res) => {
         pricePoint: req.body.price, // Access price from the request body
         restaurantId: generateShortUUID() // Assuming you have a function to generate UUID
         };
+
+        // Check if the "Favorites" list exists
+        let listCollection = await db.collection("lists");
+        const existingList = await listCollection.findOne({ name: listName });
+
+        if (!existingList) {
+            // If the list doesn't exist, create a new one
+            const newList = new PostFavoritesList({
+                listId: generateShortUUID(),
+                name: listName // Set the name for the new list
+            });
+
+            await listCollection.insertOne(newList);
+
+            // Associate the new list's ID with the restaurant data
+            newRestaurant.listId = newList.listId;
+        } else {
+            // If the list exists, associate its ID with the restaurant data
+            newRestaurant.listId = existingList.listId;
+        }
 
         // Insert the restaurant instance into the restaurants collection
         const restaurantCollection = db.collection("restaurants");
