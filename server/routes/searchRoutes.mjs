@@ -204,7 +204,7 @@ router.post('/search/save-favorite', async (req, res) => {
         
         // Create a new restaurant instance
         const newRestaurant = {
-            listId,
+            listId: req.body.listId,
             restaurantName: searchResult.name, // Access the restaurant name from searchResult
             cuisine: searchResult.categories.map(category => category.title).join(', '), // Access categories from searchResult
             phoneNumber: searchResult.display_phone,
