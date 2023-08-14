@@ -46,10 +46,11 @@ router.post('/search/save-favorite', async (req, res) => {
     console.log("Received data: ", req.body);
     
     try {
-        const { listId, restaurantName, cuisine, phoneNumber, address, pricePoint } = req.body;
+        const { yelpId, listId, restaurantName, cuisine, phoneNumber, address, pricePoint } = req.body;
         
     // Create a new restaurant instance
     const newRestaurant = {
+        yelpId: req.body.id,
         listId: req.body.listId,
         restaurantName: req.body.name, // Access the restaurant name from the request body
         cuisine: req.body.categories.map(category => category.title).join(', '), // Access categories from the request body

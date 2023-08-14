@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 
 const restaurantSchema = mongoose.Schema({
+    yelpId: String,
     restaurantName: String,
     cuisine: String,
     phoneNumber: String,
