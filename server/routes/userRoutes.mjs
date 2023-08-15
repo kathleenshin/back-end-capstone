@@ -16,7 +16,6 @@ router.get("/users", async (req, res) => {
     }
 });
 router.post("/save-user", async (req, res) => {
-    console.log("Received request:", req.body)
     const subId = req.body.subId;
 
     try {
