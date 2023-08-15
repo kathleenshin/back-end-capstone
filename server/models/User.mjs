@@ -1,12 +1,10 @@
 import mongoose from 'mongoose';
 
 const userSchema = mongoose.Schema({
-    name: String,
-    email: String,
-    password: String
+   subId: String,
 })
 
 
-const PostUser = mongoose.model('PostUser', userSchema);
+const User = mongoose.model('PostUser', userSchema);
 
-export default PostUser;
+export default User;
