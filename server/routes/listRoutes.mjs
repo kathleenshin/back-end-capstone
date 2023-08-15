@@ -3,6 +3,7 @@ import db from "../db/conn.mjs";
 import { ObjectId } from "mongodb";
 import {v4 as uuidv4} from 'uuid';
 import fetch from 'node-fetch';
+import userRoutes from "../routes/userRoutes.mjs";
 
 function generateShortUUID() {
     const fullUUID = uuidv4();
@@ -40,9 +41,10 @@ const router = express.Router();
 
 
 // This section will help you get a list of all the lists.
-router.get("/", async (req, res) => {
+router.get("/user/:subId", async (req, res) => {
     let collection = await db.collection("lists");
-    let result = await collection.find({}).toArray();
+    let query = {subId: req.params.subId};
+    let result = await collection.find({query}).toArray();
     
     if (!result) {
         res.status(404).send("Not found");
@@ -52,9 +54,9 @@ router.get("/", async (req, res) => {
 });
 
 // This section will help you get a single list by id
-router.get("/list/:listId", async (req, res) => {
+router.get("/user/:subId/list/:listId", async (req, res) => {
     let collection = await db.collection("restaurants");
-    let query = {listId: req.params.listId};
+    let query = {subId: req.params.subId, listId: req.params.listId};
     let result = await collection.find(query).toArray();
 
     if (!result) {
