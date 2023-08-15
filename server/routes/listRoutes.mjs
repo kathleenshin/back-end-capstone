@@ -42,7 +42,6 @@ const router = express.Router();
 
 // This section will help you get a list of all the lists.
 router.get("/user/:subId", async (req, res) => {
-router.get("/user/:subId", async (req, res) => {
     let collection = await db.collection("lists");
     let query = {subId: req.params.subId};
     let result = await collection.find(query).toArray();
