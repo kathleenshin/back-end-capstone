@@ -3,7 +3,7 @@ import db from "../db/conn.mjs";
 import { ObjectId } from "mongodb";
 import {v4 as uuidv4} from 'uuid';
 import fetch from 'node-fetch';
-//import userRoutes from "../routes/userRoutes.mjs";
+import userRoutes from "../routes/userRoutes.mjs";
 
 function generateShortUUID() {
     const fullUUID = uuidv4();
