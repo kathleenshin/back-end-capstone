@@ -3,6 +3,7 @@ import db from "../db/conn.mjs";
 import { ObjectId } from "mongodb";
 import {v4 as uuidv4} from 'uuid';
 import fetch from 'node-fetch';
+import userRoutes from "../routes/userRoutes.mjs";
 
 function generateShortUUID() {
     const fullUUID = uuidv4();
@@ -40,6 +41,7 @@ const router = express.Router();
 
 
 // This section will help you get a list of all the lists.
+router.get("/user/:subId", async (req, res) => {
 router.get("/user/:subId", async (req, res) => {
     let collection = await db.collection("lists");
     let query = {subId: req.params.subId};
