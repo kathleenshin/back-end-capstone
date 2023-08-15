@@ -25,6 +25,10 @@ router.post("/save-user", async (req, res) => {
     } else {
         const newUser = new User({
         subId: req.body.subId,
+        name: req.body.name,
+        givenName: req.body.givenName,
+        email: req.body.email,
+        picture: req.body.picture 
         });
         const UserCollection = db.collection("users");
         const result = await UserCollection.insertOne(newUser);
