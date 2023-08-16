@@ -56,7 +56,7 @@ router.post('/search/save-favorite/user/:subId', async (req, res) => {
         yelpId: req.body.id,
         name: req.body.name,
         listId: req.body.listId,
-        restaurantName: req.body.name, // Access the restaurant name from the request body
+        restaurantName: req.body.restaurantName, // Access the restaurant name from the request body
         cuisine: req.body.categories.map(category => category.title).join(', '), // Access categories from the request body
         phoneNumber: req.body.display_phone,
         address: req.body.location.display_address.join(', '), // Access display address from the request body
