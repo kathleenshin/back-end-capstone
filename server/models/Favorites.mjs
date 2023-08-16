@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 
 const favoritesSchema = mongoose.Schema({
-    name: {
+    listName: {
         type: String,
         default: "Favorites"
     },

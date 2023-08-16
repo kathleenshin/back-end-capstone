@@ -41,10 +41,9 @@ const router = express.Router();
 
 
 // This section will help you get a list of all the lists.
-router.get("/user/:subId", async (req, res) => {
+router.get("/", async (req, res) => {
     let collection = await db.collection("lists");
-    let query = {subId: req.params.subId};
-    let result = await collection.find(query).toArray();
+    let result = await collection.find({}).toArray();
     
     if (!result) {
         res.status(404).send("Not found");
@@ -54,9 +53,9 @@ router.get("/user/:subId", async (req, res) => {
 });
 
 // This section will help you get a single list by id
-router.get("/user/:subId/list/:listId", async (req, res) => {
+router.get("/list/:listId", async (req, res) => {
     let collection = await db.collection("lists");
-    let query = {subId: req.params.subId, listId: req.params.listId};
+    let query = {listId: req.params.listId};
     let result = await collection.find(query).toArray();
 
     if (!result) {
@@ -67,27 +66,27 @@ router.get("/user/:subId/list/:listId", async (req, res) => {
 });
 
 
-// // This section will help you create a new list.
-//     // Need to update with subId for future functionality
-// router.post("/", async (req, res) => {
-//     if (!req.body.name || req.body.name.trim() === "") {
-//         res.status(400).send("Name is required");
-//         return;
-//     }
+// This section will help you create a new list.
+    // Need to update with subId for future functionality
+router.post("/", async (req, res) => {
+    if (!req.body.name || req.body.name.trim() === "") {
+        res.status(400).send("Name is required");
+        return;
+    }
 
-//     let newDocument = {
-//         listId: generateShortUUID(),
-//         name: req.body.name
-//     };
-//     let collection = await db.collection("lists");
-//     let result = await collection.insertOne(newDocument);
+    let newDocument = {
+        listId: generateShortUUID(),
+        name: req.body.name
+    };
+    let collection = await db.collection("lists");
+    let result = await collection.insertOne(newDocument);
 
-//     if (!result) {
-//         res.status(204).send("No content");
-//     } else {
-//         res.status(201).send(result);
-//     }
-// });
+    if (!result) {
+        res.status(204).send("No content");
+    } else {
+        res.status(201).send(result);
+    }
+});
 
 
 // // This section will help you update a list by id.
@@ -176,20 +175,16 @@ router.get("/user/:subId/list/:listId", async (req, res) => {
 
 
 // This section will help you delete a restaurant from a list.
-router.delete("/user/:subId/list/:listId/:restaurantId", async (req, res) => {
-    const listQuery = { listId: req.params.listId};
-    const restaurantQuery = { restaurantId: req.params.restaurantId, listId: req.params.listId, subId: req.params.subId};
-
-    const listCollection = db.collection("lists");
-    const restaurantCollection = db.collection("restaurants");
-
-    const list = await listCollection.findOne(listQuery);
-    if (!list) {
-        res.status(404).send("List not found");
+router.delete("/list/:listId", async (req, res) => {
+    if (!ObjectId.isValid(req.params.listId)) {
+        res.status(400).send("Invalid ID");
         return;
     }
 
-    const result = await restaurantCollection.deleteOne(restaurantQuery);
+    const query = { listId: req.params.listId };
+
+    const collection = await db.collection("lists");
+    let result = await collection.deleteOne(query);
 
     if (result.deletedCount === 0) {
         res.status(304).send("Not modified");
