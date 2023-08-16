@@ -43,7 +43,7 @@ router.get('/search', async (req, res) => {
 
 
 // // This section will help you add a new restaurant to a list.
-router.post('/search/save-favorite', async (req, res) => {
+router.post('/search/save-favorite/user/:subId', async (req, res) => {
     console.log("Received data: ", req.body);
     
     try {
