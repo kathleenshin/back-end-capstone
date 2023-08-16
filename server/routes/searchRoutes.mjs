@@ -3,7 +3,8 @@ import db from "../db/conn.mjs";
 import { ObjectId } from "mongodb";
 import {v4 as uuidv4} from 'uuid';
 import fetch from 'node-fetch';
-import PostFavoritesList from "../models/Restaurant.mjs";
+import PostFavoritesList from "../models/Favorites.mjs";
+import PostList from "../models/List.mjs";
 import User from "../models/User.mjs";
 
 const router = express.Router();
@@ -61,7 +62,6 @@ router.post('/search/save-favorite/user/:subId', async (req, res) => {
         address: req.body.location.display_address.join(', '), // Access display address from the request body
         pricePoint: req.body.price, // Access price from the request body
         restaurantId: generateShortUUID(), // Assuming you have a function to generate UUID
-        subId: req.body.subId
         };
 
         // Check if the "Favorites" list exists
