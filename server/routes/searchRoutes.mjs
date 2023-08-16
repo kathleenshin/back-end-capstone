@@ -51,7 +51,8 @@ router.post('/search/save-favorite', async (req, res) => {
     // Create a new restaurant instance
     const newRestaurant = {
         yelpId: req.body.id,
-        // listId: req.body.listId,
+        listId: "42bef239-dc7",
+        listName: "Favorites",
         restaurantName: req.body.name, // Access the restaurant name from the request body
         cuisine: req.body.categories.map(category => category.title).join(', '), // Access categories from the request body
         phoneNumber: req.body.display_phone,
@@ -62,7 +63,7 @@ router.post('/search/save-favorite', async (req, res) => {
 
         // Check if the "Favorites" list exists
         let listCollection = await db.collection("lists");
-        const existingList = await listCollection.findOne({ listName: listName });
+        const existingList = await listCollection.findOne({ listId: "42bef239-dc7" });
 
         if (!existingList) {
             // If the list doesn't exist, create a new one
