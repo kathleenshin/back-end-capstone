@@ -3,7 +3,7 @@ import db from "../db/conn.mjs";
 import { ObjectId } from "mongodb";
 import {v4 as uuidv4} from 'uuid';
 import fetch from 'node-fetch';
-import PostFavoritesList from "../models/Favorites.mjs";
+import PostFavoritesList from "../models/Restaurant.mjs";
 import PostList from "../models/List.mjs";
 import User from "../models/User.mjs";
 
