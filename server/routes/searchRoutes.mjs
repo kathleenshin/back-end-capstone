@@ -62,13 +62,13 @@ router.post('/search/save-favorite', async (req, res) => {
 
         // Check if the "Favorites" list exists
         let listCollection = await db.collection("lists");
-        const existingList = await listCollection.findOne({ name: listName });
+        const existingList = await listCollection.findOne({ listName: listName });
 
         if (!existingList) {
             // If the list doesn't exist, create a new one
             const newList = new PostFavoritesList({
                 listId: generateShortUUID(),
-                name: listName // Set the name for the new list
+                listName: req.body.listName // Set the name for the new list
                 // name: req.body.name
             });
 
