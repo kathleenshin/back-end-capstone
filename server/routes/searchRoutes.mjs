@@ -55,7 +55,7 @@ router.post('/search/save-favorite', async (req, res) => {
         //subId: req.body.subId,
         yelpId: req.body.id,
         listName: "Favorites",
-        listId: req.body.listId,
+        listId: "97d543e9-062",
         restaurantName: req.body.name, // Access the restaurant name from the request body
         cuisine: req.body.categories.map(category => category.title).join(', '), // Access categories from the request body
         phoneNumber: req.body.display_phone,
@@ -63,18 +63,6 @@ router.post('/search/save-favorite', async (req, res) => {
         pricePoint: req.body.price, // Access price from the request body
         restaurantId: generateShortUUID(), // Assuming you have a function to generate UUID
         };
-        // const newRestaurant = new PostRestaurant({
-        //     subId: req.body.subId,
-        //     yelpId: req.body.id,
-        //     listName: "Favorites",
-        //     listId: req.body.listId,
-        //     restaurantName: req.body.name, // Access the restaurant name from the request body
-        //     cuisine: req.body.categories.map(category => category.title).join(', '), // Access categories from the request body
-        //     phoneNumber: req.body.display_phone,
-        //     address: req.body.location.display_address.join(', '), // Access display address from the request body
-        //     pricePoint: req.body.price, // Access price from the request body
-        //     restaurantId: generateShortUUID(), // Assuming you have a function to generate UUID
-        //     });
         
         // Check if the "Favorites" list exists
         let listCollection = await db.collection("lists");
