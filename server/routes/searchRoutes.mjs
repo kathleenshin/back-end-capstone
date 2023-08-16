@@ -46,12 +46,12 @@ router.post('/search/save-favorite', async (req, res) => {
     console.log("Received data: ", req.body);
     
     try {
-        const { yelpId, listId, restaurantName, cuisine, phoneNumber, address, pricePoint } = req.body;
+        const { yelpId, restaurantName, cuisine, phoneNumber, address, pricePoint } = req.body;
         
     // Create a new restaurant instance
     const newRestaurant = {
         yelpId: req.body.id,
-        listId: req.body.listId,
+        // listId: req.body.listId,
         restaurantName: req.body.name, // Access the restaurant name from the request body
         cuisine: req.body.categories.map(category => category.title).join(', '), // Access categories from the request body
         phoneNumber: req.body.display_phone,
@@ -68,8 +68,8 @@ router.post('/search/save-favorite', async (req, res) => {
             // If the list doesn't exist, create a new one
             const newList = new PostFavoritesList({
                 listId: generateShortUUID(),
-                // name: listName // Set the name for the new list
-                name: req.body.name
+                name: listName // Set the name for the new list
+                // name: req.body.name
             });
 
             await listCollection.insertOne(newList);
