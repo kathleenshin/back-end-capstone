@@ -4,8 +4,6 @@ import { ObjectId } from "mongodb";
 import {v4 as uuidv4} from 'uuid';
 import fetch from 'node-fetch';
 import PostFavoritesList from "../models/Restaurant.mjs";
-import PostList from "../models/List.mjs";
-import User from "../models/User.mjs";
 
 const router = express.Router();
 
@@ -53,8 +51,7 @@ router.post('/search/save-favorite', async (req, res) => {
     // Create a new restaurant instance
     const newRestaurant = {
         yelpId: req.body.id,
-        listName: "Favorites",
-        listId: "97d543e9-062",
+        listId: req.body.listId,
         restaurantName: req.body.name, // Access the restaurant name from the request body
         cuisine: req.body.categories.map(category => category.title).join(', '), // Access categories from the request body
         phoneNumber: req.body.display_phone,
@@ -62,7 +59,7 @@ router.post('/search/save-favorite', async (req, res) => {
         pricePoint: req.body.price, // Access price from the request body
         restaurantId: generateShortUUID() // Assuming you have a function to generate UUID
         };
-        
+
         // Check if the "Favorites" list exists
         let listCollection = await db.collection("lists");
         const existingList = await listCollection.findOne({ name: listName });
@@ -101,4 +98,6 @@ router.post('/search/save-favorite', async (req, res) => {
 
 
 export default router;
+
+
 
