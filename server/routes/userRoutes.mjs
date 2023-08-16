@@ -4,7 +4,7 @@ import User from "../models/User.mjs";
 
 const router = express.Router();
 
-// This section will help you get all the users
+// This section will help you get all the users.
 router.get("/users", async (req, res) => {
     let collection = await db.collection("users");
     let result = await collection.find({}).toArray();
@@ -15,18 +15,21 @@ router.get("/users", async (req, res) => {
         res.status(200).send(result);
     }
 });
-// This section will help you get a user by sub id
-router.get("/users/:subId", async (req, res) => {
-    let collection = await db.collection("users");
-    let query = {subId: req.params.subId};
-    let result = await collection.find({query}).toArray();
 
+
+// This section will help you get a single user.
+router.get("/:subId", async (req, res) => {
+    let collection = await db.collection("users");
+    let query = {subId: req.body.subId};
+    let result = await collection.find(query).toArray();
+    
     if (!result) {
         res.status(404).send("User Not found");
     } else {
         res.status(200).send(result);
     }
 });
+
 
 router.post("/save-user", async (req, res) => {
     const subId = req.body.subId;
