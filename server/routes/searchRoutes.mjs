@@ -52,7 +52,7 @@ router.post('/search/save-favorite', async (req, res) => {
         
     // Create a new restaurant instance
     const newRestaurant = {
-        subId: req.body.subId,
+        subId: subId,
         yelpId: req.body.id,
         listName: listName,
         listId: req.body.listId,
