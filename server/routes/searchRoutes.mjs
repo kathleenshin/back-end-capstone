@@ -4,8 +4,6 @@ import { ObjectId } from "mongodb";
 import {v4 as uuidv4} from 'uuid';
 import fetch from 'node-fetch';
 import PostFavoritesList from "../models/Restaurant.mjs";
-import PostList from "../models/List.mjs";
-import User from "../models/User.mjs";
 
 const router = express.Router();
 
@@ -48,20 +46,18 @@ router.post('/search/save-favorite', async (req, res) => {
     console.log("Received data: ", req.body);
     
     try {
-        //const { subID, yelpId, listId, restaurantName, cuisine, phoneNumber, address, pricePoint } = req.body;
+        const { yelpId, listId, restaurantName, cuisine, phoneNumber, address, pricePoint } = req.body;
         
     // Create a new restaurant instance
     const newRestaurant = {
-        //subId: req.body.subId,
         yelpId: req.body.id,
-        listName: "",
         listId: req.body.listId,
         restaurantName: req.body.name, // Access the restaurant name from the request body
         cuisine: req.body.categories.map(category => category.title).join(', '), // Access categories from the request body
         phoneNumber: req.body.display_phone,
         address: req.body.location.display_address.join(', '), // Access display address from the request body
         pricePoint: req.body.price, // Access price from the request body
-        restaurantId: generateShortUUID(), // Assuming you have a function to generate UUID
+        restaurantId: generateShortUUID() // Assuming you have a function to generate UUID
         };
 
         // Check if the "Favorites" list exists
@@ -73,7 +69,7 @@ router.post('/search/save-favorite', async (req, res) => {
             const newList = new PostFavoritesList({
                 listId: generateShortUUID(),
                 // name: listName // Set the name for the new list
-                listName: req.body.listName
+                name: req.body.name
             });
 
             await listCollection.insertOne(newList);
@@ -102,3 +98,4 @@ router.post('/search/save-favorite', async (req, res) => {
 
 
 export default router;
+
