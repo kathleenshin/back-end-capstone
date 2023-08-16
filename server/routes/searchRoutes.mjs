@@ -54,7 +54,7 @@ router.post('/search/save-favorite', async (req, res) => {
     const newRestaurant = {
         //subId: req.body.subId,
         yelpId: req.body.id,
-        listName: req.body.listName,
+        listName: "",
         listId: req.body.listId,
         restaurantName: req.body.name, // Access the restaurant name from the request body
         cuisine: req.body.categories.map(category => category.title).join(', '), // Access categories from the request body
@@ -73,7 +73,7 @@ router.post('/search/save-favorite', async (req, res) => {
             const newList = new PostFavoritesList({
                 listId: generateShortUUID(),
                 // name: listName // Set the name for the new list
-                name: req.body.name
+                listName: req.body.listName
             });
 
             await listCollection.insertOne(newList);
