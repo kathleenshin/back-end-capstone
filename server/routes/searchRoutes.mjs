@@ -46,18 +46,25 @@ router.post('/search/save-favorite', async (req, res) => {
     console.log("Received data: ", req.body);
     
     try {
-        const { yelpId, restaurantName, cuisine, phoneNumber, address, pricePoint } = req.body;
+        // const { yelpId, name, categories, phoneNumber, address, pricePoint } = req.body;
         
     // Create a new restaurant instance
     const newRestaurant = {
         yelpId: req.body.id,
         listId: "42bef239-dc7",
         listName: "Favorites",
-        restaurantName: req.body.name, // Access the restaurant name from the request body
-        cuisine: req.body.categories.map(category => category.title).join(', '), // Access categories from the request body
-        phoneNumber: req.body.display_phone,
-        address: req.body.location.display_address.join(', '), // Access display address from the request body
-        pricePoint: req.body.price, // Access price from the request body
+        name: req.body.name, // Access the restaurant name from the request body
+        categories: req.body.categories.map(category => category.title).join(', '), // Access categories from the request body
+        display_phone: req.body.display_phone,
+        address1: req.body.location.address1,
+        address2: req.body.location.address2,
+        address3: req.body.location.address3,
+        city: req.body.location.city,
+        country: req.body.location.country,
+        display_address: req.body.location.display_address.join(', '), // Access display address from the request body
+        state: req.body.location.state,
+        zip_code: req.body.zip_code,
+        price: req.body.price, // Access price from the request body
         restaurantId: generateShortUUID() // Assuming you have a function to generate UUID
         };
 
