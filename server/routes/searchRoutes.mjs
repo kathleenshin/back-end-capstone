@@ -93,7 +93,7 @@ router.post('/search/save-favorite', async (req, res) => {
             city: address.city,
             country: address.country,
             // display_address: req.body.location.display_address.join(', '),
-            display_address: req.body.location.display_address ? req.body.location.display_address.join(', ') : '',
+            display_address: req.body.location.display_address ? req.body.location.display_address : [],
             state: address.state,
             zip_code: address.zip_code,
         })),
