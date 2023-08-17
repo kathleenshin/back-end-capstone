@@ -6,10 +6,11 @@ const categorySchema = mongoose.Schema({
     title: String
 });
 
-const displayAddressSchema = mongoose.Schema({
-    0: String,
-    1: String
-})
+// const displayAddressSchema = mongoose.Schema({
+//     0: String,
+//     1: String
+// })
+const displayAddressSchema = mongoose.Schema([String]);
 
 const restaurantSchema = mongoose.Schema({
     yelpId: String,
@@ -35,7 +36,7 @@ const restaurantSchema = mongoose.Schema({
         address3: String,
         city: String,
         country: String,
-        display_address: [displayAddressSchema],
+        display_address: displayAddressSchema,
         state: String,
         zip_code: String,
     },
