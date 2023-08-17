@@ -138,7 +138,7 @@ router.post('/search/save-favorite', async (req, res) => {
         }
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'An error occurred while saving the restaurant' });
+        res.status(500).json({ message: error });
     }
 });
 
