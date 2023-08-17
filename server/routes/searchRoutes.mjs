@@ -63,7 +63,7 @@ router.post('/search/save-favorite', async (req, res) => {
         country: req.body.location.country,
         display_address: req.body.location.display_address.join(', '), // Access display address from the request body
         state: req.body.location.state,
-        zip_code: req.body.zip_code,
+        zip_code: req.body.location.zip_code,
         price: req.body.price, // Access price from the request body
         restaurantId: generateShortUUID() // Assuming you have a function to generate UUID
         };
