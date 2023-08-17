@@ -168,9 +168,9 @@ router.post("/list/:listId", async (req, res) => {
 
 
 // This section will help you delete a restaurant from a list.
-router.delete("/list/:listId/:restaurantId", async (req, res) => {
+router.delete("/list/:listId/:yelpId", async (req, res) => {
     const listQuery = { listId: req.params.listId};
-    const restaurantQuery = { restaurantId: req.params.restaurantId, listId: req.params.listId};
+    const restaurantQuery = { yelpId: req.params.yelpId, listId: req.params.listId};
 
     const listCollection = db.collection("lists");
     const restaurantCollection = db.collection("restaurants");
