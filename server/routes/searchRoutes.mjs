@@ -54,7 +54,8 @@ router.post('/search/save-favorite', async (req, res) => {
         listId: "42bef239-dc7",
         listName: "Favorites",
         name: req.body.name, // Access the restaurant name from the request body
-        categories: req.body.categories.map(category => category.title).join(', '), // Access categories from the request body
+        // categories: req.body.categories.map(category => category.title).join(', '), // Access categories from the request body
+        categories: req.body.categories.map(category => `${category.alias} - ${category.title}`).join(', '),
         display_phone: req.body.display_phone,
         address1: req.body.location.address1,
         address2: req.body.location.address2,

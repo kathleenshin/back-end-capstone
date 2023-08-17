@@ -1,9 +1,15 @@
 import mongoose from 'mongoose';
 
+
+const categorySchema = mongoose.Schema({
+    alias: String,
+    title: String
+});
+
 const restaurantSchema = mongoose.Schema({
     yelpId: String,
     name: String,
-    categories: String,
+    categories: [categorySchema], // Now an array of category objects
     display_phone: String,
     address1: String,
     address2: String,
