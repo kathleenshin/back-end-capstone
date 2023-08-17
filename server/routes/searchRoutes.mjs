@@ -78,10 +78,10 @@ router.post('/search/save-favorite', async (req, res) => {
             title: category.title
         })),
         // display_categories: req.body.categories.map(category => category.title).join(', '), 
-        coordinates: req.body.coordinates.map(coordinate => ({
-            latitude: coordinate.latitude,
-            longitude: coordinate.longitude
-        })),
+        coordinates: {
+            latitude: req.body.coordinates.latitude,
+            longitude: req.body.coordinates.longitude
+        },
         display_phone: req.body.display_phone,
         distance: req.body.distance,
         yelpId: req.body.id,
