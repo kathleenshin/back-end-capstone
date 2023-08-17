@@ -84,7 +84,8 @@ router.post('/search/save-favorite', async (req, res) => {
         },
         display_phone: req.body.display_phone,
         distance: req.body.distance,
-        yelpId: req.body.id,
+        // yelpId: req.body.id,
+        id: req.body.id,
         image_url: req.body.image_url,
         // location: req.body.categories.map(address => ({
         //     address1: address.address1,
