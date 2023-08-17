@@ -22,7 +22,8 @@ const categorySchema = mongoose.Schema({
 // });
 
 const restaurantSchema = mongoose.Schema({
-    yelpId: String,
+    // yelpId: String,
+    id: String,
     name: String,
     categories: [categorySchema],
     display_phone: String,
