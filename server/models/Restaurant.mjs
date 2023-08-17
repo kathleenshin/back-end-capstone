@@ -45,7 +45,7 @@ const restaurantSchema = mongoose.Schema({
         address3: String,
         city: String,
         country: String,
-        display_address: [string],
+        display_address: [String],
         state: String,
         zip_code: String,
     },
