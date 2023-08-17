@@ -130,7 +130,8 @@ router.delete("/list/:listId", async (req, res) => {
 // ************* Restaurants routes *************
 
 // This section will help you get a single record by id
-router.get("/list/:listId/:restaurantId", async (req, res) => {
+// was :restaurantId instead of :id
+router.get("/list/:listId/:id", async (req, res) => {
     let collection = await db.collection("restaurants");
 
     const restaurantQuery = { restaurantId: req.params.restaurantId};
