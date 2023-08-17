@@ -134,7 +134,7 @@ router.delete("/list/:listId", async (req, res) => {
 router.get("/list/:listId/:id", async (req, res) => {
     let collection = await db.collection("restaurants");
 
-    const restaurantQuery = { restaurantId: req.params.restaurantId};
+    const restaurantQuery = { id: req.params.id};
     let result = await collection.findOne(restaurantQuery);
 
     if (!result) {
