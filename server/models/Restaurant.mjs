@@ -39,15 +39,43 @@ const restaurantSchema = mongoose.Schema({
         latitude: Number,
         longitude: Number,
     },
+    // location: {
+    //     address1: String,
+    //     address2: String,
+    //     address3: String,
+    //     city: String,
+    //     country: String,
+    //     display_address: [String],
+    //     state: String,
+    //     zip_code: String,
+    // },
     location: {
-        address1: String,
+        address1: {
+            type: String,
+            required: true
+        },
         address2: String,
         address3: String,
-        city: String,
-        country: String,
-        display_address: [String],
-        state: String,
-        zip_code: String,
+        city: {
+            type: String,
+            required: true
+        },
+        country: {
+            type: String,
+            required: true
+        },
+        state: {
+            type: String,
+            required: true
+        },
+        zip_code: {
+            type: String,
+            required: true
+        },
+        display_address: [{
+            type: String,
+            required: true
+        }]
     },
     price: String,
     listId: String,
